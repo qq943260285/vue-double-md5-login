@@ -15,14 +15,16 @@ axios.interceptors.request.use(
     }
     return config
   },
-  err => {
-    return Promise.reject(err)
-  },
+    err=> {
+    // Message.error({message: '请求超时!'});
+    return Promise.reject(err);
+  }
 )
 
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
+    // console.log(response)
     return response
   },
   error => {
@@ -32,17 +34,17 @@ axios.interceptors.response.use(
         case 401:
           // 401 清除token信息并跳转到登录页面
           store.commit(types.LOGOUT)
-
           // 只有在当前路由不是登录页面才跳转
           router.currentRoute.path !== 'login' &&
           router.replace({
             path: 'login',
             // query: { redirect: router.currentRoute.path },
           })
+          return Promise.resolve(error);
       }
     }
     // console.log(error);//console : Error: Request failed with status code 402
-    // return Promise.reject(error.response.data)
+    return Promise.reject(error);
   },
 )
 

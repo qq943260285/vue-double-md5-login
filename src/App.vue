@@ -23,12 +23,16 @@
 </script>
 
 <style>
-  /*#app {*/
-  /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
-  /*text-align: center;*/
-  /*color: #2c3e50;*/
-  /*margin-top: 60px;*/
-  /*}*/
+  html,body{
+    margin: 0;
+    padding: 0;
+    background: url("https://api.xygeng.cn/bing/1920.php") no-repeat;
+  }
+  #app {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+  }
 </style>

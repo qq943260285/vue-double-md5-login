@@ -2,24 +2,48 @@
   <div class="hello">
     <h1>{{ msg }}{{md5}}</h1>
     <h2>{{info}}</h2>
-    <div style='height: 500px;background-color: aqua'></div>
-    <div style='height: 500px;background-color: aquamarine'></div>
+    <!--<div style='height: 500px;background-color: aqua'></div>-->
+    <!--<div style='height: 500px;background-color: aquamarine'></div>-->
     <input @blur.prevent="inputLoseFocus"/>
     <button @click='get401'>请求</button>
+    <el-form :rules="rules">
+      <el-form-item label="密码" prop="pass">
+        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
+  import 'element-ui/lib/theme-chalk/display.css';
   import md5 from 'md5';
   import api from '@/constant/api'
 
   export default {
     name: 'HelloWorld',
     data() {
+      var validatePass = (rule, value, callback) => {
+        console.log(value)
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          callback();
+        }
+      };
       return {
         msg: 'Welcome to Your Vue.js App',
         md5: md5('xyzs'),
-        info:"---"
+        info: "---",
+        ruleForm: {
+          pass: '',
+          checkPass: '',
+          age: ''
+        },
+        rules: {
+          pass: [
+            {validator: validatePass, trigger: 'blur'}
+          ],
+        }
       }
     },
     methods: {

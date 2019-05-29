@@ -1,129 +1,237 @@
 <template>
   <div id="Register">
 
-    <el-container>
-      <el-header></el-header>
-      <el-main>
-        <el-row :gutter="10">
-          <el-col :xs="2" :sm="5" :md="6" :lg="8" :xl="9">
-            <div class="grid-content "></div>
-          </el-col>
-          <el-col :xs="20" :sm="14" :md="12" :lg="8" :xl="6">
-            <el-card class="box-card" shadow="hover">
-              <div style='text-align:center'>
-                <img src='http://iph.href.lu/150x64?text=注册logo&fg=fff&bg=92B59A'>
-              </div>
-              <div>
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="用户名"
-                    v-model="name"
-                    clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-user"></i>
-                  </el-input>
-                </el-row>
+    <el-row>
+      <el-col :xs="2" :sm="5" :md="6" :lg="8" :xl="9">
+        <div class="grid-content "></div>
+      </el-col>
+      <el-col :xs="20" :sm="14" :md="12" :lg="8" :xl="6">
+        <el-card class="box-card" shadow="hover">
+          <div style='text-align:center'>
+            <img src='http://iph.href.lu/150x64?text=注册logo&fg=fff&bg=92B59A'>
+          </div>
+          <div>
 
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="请输入密码"
-                    v-model="password"
-                    show-password>
-                    <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-                  </el-input>
-                </el-row>
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="请确认密码"
-                    v-model="password"
-                    show-password>
-                    <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-                  </el-input>
-                </el-row>
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="手机"
-                    v-model="mobile"
-                    clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
-                  </el-input>
-                </el-row>
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="邮箱"
-                    v-model="email"
-                    clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-message"></i>
-                  </el-input>
-                </el-row>
-                <el-row class='row-div'>
-                  <el-input
-                    class="input-var"
-                    placeholder="验证码"
-                    v-model="code"
-                    clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-key"></i>
-                  </el-input>
-                </el-row>
-                <el-row class='row-div'>
-                  <el-col :span="12">
-                    <el-button type="info" class='input-btn' @click='login'>已有账户</el-button>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-button type="success" class='input-btn'>注册</el-button>
-                  </el-col>
-                </el-row>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :xs="2" :sm="5" :md="6" :lg="8" :xl="9">
-            <div class="grid-content"></div>
-          </el-col>
-        </el-row>
-        <!--xs、sm、md、lg 和 xl-->
-        <!--xs	<768px-->
-        <!--sm	≥768px-->
-        <!--md	≥992px-->
-        <!--lg	≥1200px-->
-        <!--xl	≥1920px-->
-        <!--hidden-xs-only - 当视口在 xs 尺寸时隐藏-->
-        <!--hidden-sm-only - 当视口在 sm 尺寸时隐藏-->
-        <!--hidden-sm-and-down - 当视口在 sm 及以下尺寸时隐藏-->
-        <!--hidden-sm-and-up - 当视口在 sm 及以上尺寸时隐藏-->
-        <!--hidden-md-only - 当视口在 md 尺寸时隐藏-->
-        <!--hidden-md-and-down - 当视口在 md 及以下尺寸时隐藏-->
-        <!--hidden-md-and-up - 当视口在 md 及以上尺寸时隐藏-->
-        <!--hidden-lg-only - 当视口在 lg 尺寸时隐藏-->
-        <!--hidden-lg-and-down - 当视口在 lg 及以下尺寸时隐藏-->
-        <!--hidden-lg-and-up - 当视口在 lg 及以上尺寸时隐藏-->
-        <!--hidden-xl-only - 当视口在 xl 尺寸时隐藏-->
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width=0>
+              <el-form-item prop="name">
+                <el-input
+                  class="input-var"
+                  placeholder="用户名"
+                  v-model="ruleForm.name"
+                  clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-user"></i>
+                </el-input>
+              </el-form-item>
 
-      </el-main>
-      <el-footer></el-footer>
-    </el-container>
+
+              <el-form-item prop="password">
+                <el-input
+                  class="input-var"
+                  placeholder="请输入密码"
+                  v-model="ruleForm.password"
+                  show-password>
+                  <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item prop="checkPassword">
+                <el-input
+                  class="input-var"
+                  placeholder="请确认密码"
+                  v-model="ruleForm.checkPassword"
+                  show-password>
+                  <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item prop="mobile">
+                <el-input
+                  class="input-var"
+                  placeholder="手机"
+                  v-model="ruleForm.mobile"
+                  clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item prop="email">
+                <el-input
+                  class="input-var"
+                  placeholder="邮箱"
+                  v-model="ruleForm.email"
+                  clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-message"></i>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item prop="code">
+                <el-input
+                  class="input-var"
+                  placeholder="验证码"
+                  v-model="ruleForm.code"
+                  clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-key"></i>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item>
+                <el-button type="success" class='input-btn'>注册</el-button>
+                <el-button type="info" class='input-btn' @click='login'>已有账户</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="2" :sm="5" :md="6" :lg="8" :xl="9">
+        <div class="grid-content"></div>
+      </el-col>
+    </el-row>
+    <!--xs、sm、md、lg 和 xl-->
+    <!--xs	<768px-->
+    <!--sm	≥768px-->
+    <!--md	≥992px-->
+    <!--lg	≥1200px-->
+    <!--xl	≥1920px-->
+    <!--hidden-xs-only - 当视口在 xs 尺寸时隐藏-->
+    <!--hidden-sm-only - 当视口在 sm 尺寸时隐藏-->
+    <!--hidden-sm-and-down - 当视口在 sm 及以下尺寸时隐藏-->
+    <!--hidden-sm-and-up - 当视口在 sm 及以上尺寸时隐藏-->
+    <!--hidden-md-only - 当视口在 md 尺寸时隐藏-->
+    <!--hidden-md-and-down - 当视口在 md 及以下尺寸时隐藏-->
+    <!--hidden-md-and-up - 当视口在 md 及以上尺寸时隐藏-->
+    <!--hidden-lg-only - 当视口在 lg 尺寸时隐藏-->
+    <!--hidden-lg-and-down - 当视口在 lg 及以下尺寸时隐藏-->
+    <!--hidden-lg-and-up - 当视口在 lg 及以上尺寸时隐藏-->
+    <!--hidden-xl-only - 当视口在 xl 尺寸时隐藏-->
   </div>
 </template>
 
 <script>
   import 'element-ui/lib/theme-chalk/display.css';
+  import md5 from 'md5';
+  import api from '@/constant/api'
+  import regexp from '@/constant/regexp'
+
   export default {
     name: "Register",
     data() {
       return {
-        name: "",
-        email: "",
-        mobile: "",
-        password: "",
-        code: ''
+        ruleForm: {
+          name: "",
+          password: "",
+          checkPassword: "",
+          mobile: "",
+          email: "",
+          code: ""
+        },
+        rules: {
+          name: [
+            {
+              validator: (rule, value, callback) => {
+                console.log(regexp.MOBILE_REGEXP.test(value),value)
+                if (value === '') {
+                  callback(new Error('请输入用户名'));
+                } else if (!regexp.USER_NAME_REGEXP.test(value)) {
+                  callback(new Error('请输入正确的用户名[数字、字母、-、_，4-16位]'));
+                } else if (regexp.MOBILE_REGEXP.test(value)) {
+                  callback(new Error('用户名不能为手机'));
+                }
+                else {
+                  callback();
+                }
+              },
+              trigger: ['change']
+            },
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请输入用户名'));
+                } else if (!regexp.USER_NAME_REGEXP.test(value)) {
+                  callback(new Error('请输入正确的用户名[4-16]'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: ['blur']
+            }
+          ],
+          password: [
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请输入密码'));
+                } else {
+                  if (this.ruleForm.checkPass !== '') {
+                    this.$refs['ruleForm'].validateField('checkPassword');
+                  }
+                  callback();
+                }
+              },
+              trigger: ['blur', 'change']
+            }
+          ],
+          checkPassword: [
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                  callback(new Error('两次输入密码不一致'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: ['blur', 'change']
+            }
+          ],
+          mobile: [
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请输入手机'));
+                } else if (!regexp.MOBILE_REGEXP.test(value)) {
+                  callback(new Error('请输入正确的手机'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: ['blur', 'change']
+            }
+          ],
+          email: [
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请输入邮箱'));
+                } else if (!regexp.EMAIL_REGEXP.test(value)) {
+                  callback(new Error('请输入正确的邮箱'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: ['blur', 'change']
+            }
+          ],
+          code: [
+            {
+              validator: (rule, value, callback) => {
+                if (value === '') {
+                  callback(new Error('请输入验证码'));
+                } else if (!regexp.CODE_REGEXP.test(value)) {
+                  callback(new Error('请输入正确的验证码'));
+                } else {
+                  callback();
+                }
+              },
+              trigger: ['blur', 'change']
+            }
+          ],
+        }
       }
     },
-    methods:{
-      login:function () {
-        this.$router.push({path:"/login"})
+    methods: {
+      login: function () {
+        this.$router.push({path: "/login"})
       }
     }
 
@@ -131,8 +239,15 @@
 </script>
 
 <style scoped>
+
+  #Register {
+    height: 100%;
+    width: 100%;
+  }
+
   .box-card {
-    border-radius: 10px
+    border-radius: 10px;
+    background-color: #ffffff99;
 
   }
 
