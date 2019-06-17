@@ -23,11 +23,22 @@
 </script>
 
 <style>
-  html,body{
+  html, body {
     margin: 0;
     padding: 0;
-    background: url("https://api.xygeng.cn/bing/1920.php") no-repeat;
+    height: 100%;
+    width: 100%;
+
   }
+
+  body {
+    background-size: cover;
+    background-image: url("https://api.xygeng.cn/bing/1920.php");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
   #app {
     height: 100%;
     align-items: center;
