@@ -44,15 +44,15 @@
                 </el-input>
               </el-form-item>
 
-              <el-form-item prop="mobile">
-                <el-input
-                  class="input-var"
-                  placeholder="手机"
-                  v-model="ruleForm.mobile"
-                  clearable>
-                  <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
-                </el-input>
-              </el-form-item>
+              <!--<el-form-item prop="mobile">-->
+              <!--<el-input-->
+              <!--class="input-var"-->
+              <!--placeholder="手机"-->
+              <!--v-model="ruleForm.mobile"-->
+              <!--clearable>-->
+              <!--<i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>-->
+              <!--</el-input>-->
+              <!--</el-form-item>-->
 
               <el-form-item prop="email">
                 <el-input
@@ -75,7 +75,7 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button type="success" class='input-btn'>注册</el-button>
+                <el-button type="success" class='input-btn' @click='register("ruleForm")'>注册</el-button>
                 <el-button type="info" class='input-btn' @click='login'>已有账户</el-button>
               </el-form-item>
             </el-form>
@@ -128,7 +128,7 @@
           name: [
             {
               validator: (rule, value, callback) => {
-                console.log(regexp.MOBILE_REGEXP.test(value),value)
+                console.log(regexp.MOBILE_REGEXP.test(value), value)
                 if (value === '') {
                   callback(new Error('请输入用户名'));
                 } else if (!regexp.USER_NAME_REGEXP.test(value)) {
@@ -137,23 +137,53 @@
                   callback(new Error('用户名不能为手机'));
                 }
                 else {
-                  callback();
+                  this.axios({
+                    method: api.existname.type,
+                    url: api.existname.url,
+                    params: {
+                      name: value
+                    }
+                  })
+                    .then((response) => {
+                      console.log(response)
+                      if (response.data) {
+                        console.log(response.data)
+                        switch (response.data.code) {
+                          case '200':
+                            if(response.data.data)
+                              callback(new Error('用户名已存在'));
+                            else
+                            callback();
+                            break
+                          case '500':
+                            callback(new Error('服务器出错'));
+                            break;
+                          default:
+                            callback();
+                        }
+                      }
+                    })
+                    .catch((error) => {
+                      this.$message.error('请求出错了哦');
+                    });
+
+
                 }
               },
               trigger: ['change']
             },
-            {
-              validator: (rule, value, callback) => {
-                if (value === '') {
-                  callback(new Error('请输入用户名'));
-                } else if (!regexp.USER_NAME_REGEXP.test(value)) {
-                  callback(new Error('请输入正确的用户名[4-16]'));
-                } else {
-                  callback();
-                }
-              },
-              trigger: ['blur']
-            }
+            // {
+            //   validator: (rule, value, callback) => {
+            //     if (value === '') {
+            //       callback(new Error('请输入用户名'));
+            //     } else if (!regexp.USER_NAME_REGEXP.test(value)) {
+            //       callback(new Error('请输入正确的用户名[4-16]'));
+            //     } else {
+            //       callback();
+            //     }
+            //   },
+            //   trigger: ['blur']
+            // }
           ],
           password: [
             {
@@ -184,20 +214,20 @@
               trigger: ['blur', 'change']
             }
           ],
-          mobile: [
-            {
-              validator: (rule, value, callback) => {
-                if (value === '') {
-                  callback(new Error('请输入手机'));
-                } else if (!regexp.MOBILE_REGEXP.test(value)) {
-                  callback(new Error('请输入正确的手机'));
-                } else {
-                  callback();
-                }
-              },
-              trigger: ['blur', 'change']
-            }
-          ],
+          // mobile: [
+          //   {
+          //     validator: (rule, value, callback) => {
+          //       if (value === '') {
+          //         callback(new Error('请输入手机'));
+          //       } else if (!regexp.MOBILE_REGEXP.test(value)) {
+          //         callback(new Error('请输入正确的手机'));
+          //       } else {
+          //         callback();
+          //       }
+          //     },
+          //     trigger: ['blur', 'change']
+          //   }
+          // ],
           email: [
             {
               validator: (rule, value, callback) => {
@@ -215,6 +245,7 @@
           code: [
             {
               validator: (rule, value, callback) => {
+                console.log(value)
                 if (value === '') {
                   callback(new Error('请输入验证码'));
                 } else if (!regexp.CODE_REGEXP.test(value)) {
@@ -230,8 +261,62 @@
       }
     },
     methods: {
-      login: function () {
+      login() {
         this.$router.push({path: "/login"})
+      },
+      register(formName) {
+        console.log(this.$refs[formName])
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.axios({
+              method: api.register.type,
+              url: api.register.url,
+              data: {
+                name: this.ruleForm.name,
+                pass: md5(this.ruleForm.checkPassword),
+                email: this.ruleForm.email,
+                code: this.ruleForm.code
+              }
+            })
+              .then((response) => {
+                console.log(response)
+                if (response.data) {
+                  console.log(response.data)
+                  switch (response.data.code) {
+                    case '200':
+                      this.$message({
+                        message: '注册成功',
+                        type: 'success'
+                      });
+                      this.$router.push({path: "/login"})
+                      break
+                    case '500':
+                      this.$message({
+                        message: '注册失败',
+                        type: 'warning'
+                      })
+                      break;
+                    default:
+                      this.$message({
+                        message: response.data.msg,
+                        type: 'warning'
+                      })
+                  }
+                }
+              })
+              .catch((error) => {
+                this.$message.error('请求出错了哦');
+              });
+
+          }
+          else {
+            this.$message({
+              message: '请输入正确信息',
+              type: 'warning'
+            })
+            return false;
+          }
+        });
       }
     }
 

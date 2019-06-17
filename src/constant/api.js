@@ -4,7 +4,15 @@ export default {
     url: '/v2/get'
   },
   login: {
-    type: "post",
+    type: "POST",
     url: '/v1/login'
-  }
+  },
+  register: {
+    type: "post",
+    url: '/v1/registered'
+  },
+  existname:{
+    type: "get",
+    url: '/v1/existname'
+  },
 }
